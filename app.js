@@ -40,6 +40,22 @@ app.post("/register", function (req, res) {
   newUser.save().then(res.render("secrets"));
 });
 
+app.post("/login", function (req, res) {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // Check in database
+  User.findOne({ email: username }).then(function (foundUser) {
+    if (foundUser) {
+      if (foundUser.password === password) {
+        res.render("secrets");
+      } else {
+        res.send("Password is incorrect");
+      }
+    }
+  });
+});
+
 app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
